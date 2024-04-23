@@ -2,9 +2,9 @@ import json
 import requests
 import pandas as pd
 import time
-from datetime import date
+from datetime import date, datetime
 import streamlit as st
-import pytz  # Import pytz
+import pytz
 
 # Function to fetch PCR data for the selected index
 def fetch_data_and_calculate_pcr(index_symbol):
@@ -35,11 +35,11 @@ def fetch_data_and_calculate_pcr(index_symbol):
         new_data = {
             'Date': date.today().isoformat(),
             'Time': datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%H:%M:%S %Z'),  # Adjust timezone here
-            'Total Call': [totCE],
-            'Total Put': [totPE],
-            'PCR Ratio': [PCR],            
-            'Nifty Value': [spot_price],  # Here we use the spot price as the Nifty value
-            'Option Signal': [option_signal]
+            'Total Call': totCE,
+            'Total Put': totPE,
+            'PCR Ratio': PCR,
+            'Nifty Value': spot_price,
+            'Option Signal': option_signal
         }
         return pd.DataFrame([new_data])
 
