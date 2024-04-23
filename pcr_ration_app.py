@@ -4,6 +4,7 @@ import pandas as pd
 import time
 from datetime import date
 import streamlit as st
+import pytz  # Import pytz
 
 # Function to fetch PCR data for the selected index
 def fetch_data_and_calculate_pcr(index_symbol):
@@ -33,7 +34,7 @@ def fetch_data_and_calculate_pcr(index_symbol):
         # Append the data to a DataFrame
         new_data = {
             'Date': date.today().isoformat(),
-            'Time': time.strftime('%H:%M:%S'),
+            'Time': datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%H:%M:%S %Z'),  # Adjust timezone here
             'Total Call': [totCE],
             'Total Put': [totPE],
             'PCR Ratio': [PCR],            
