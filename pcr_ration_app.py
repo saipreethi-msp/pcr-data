@@ -1,10 +1,9 @@
 import json
 import requests
 import pandas as pd
-from datetime import datetime
-import pytz
+import time
+from datetime import date
 import streamlit as st
-import time  # Ensure time is imported
 
 def fetch_data_and_calculate_pcr():
     # Fetch data from the URL
@@ -25,35 +24,29 @@ def fetch_data_and_calculate_pcr():
     PCR = totPE / totCE
     option_signal = 'Buy' if PCR > 1 else 'Sell' if PCR < 1 else 'Neutral'
 
-    # Get current time in Indian Standard Time
-    ist = pytz.timezone('Asia/Kolkata')
-    current_time = datetime.now(ist)
-    date_str = current_time.strftime('%Y-%m-%d')
-    time_str = current_time.strftime('%H:%M:%S')
-
     # Append the data to a DataFrame
     new_data = {
-        'Date': date_str,
-        'Time': time_str,
+        'Date': date.today().isoformat(),
+        'Time': time.strftime('%H:%M:%S'),
         'PCR Ratio': PCR,
+        'Total Call': [totCE],
+        'Total Put': [totPE],
+        'PCR Ratio': [PCR],
+        'LTP': [spot_price], 
         'Option Signal': option_signal
     }
     return pd.DataFrame([new_data])
 
 st.title('PCR Data Collection App')
 
+# Set a key for the rerun
+if 'last_rerun' not in st.session_state:
+    st.session_state['last_rerun'] = time.time()
+
 # Load and display the data
-if 'data' not in st.session_state or time.time() - st.session_state.get('last_run', 0) > 300:
+if 'data' not in st.session_state or time.time() - st.session_state['last_rerun'] > 300:
     st.session_state['data'] = fetch_data_and_calculate_pcr()
-    st.session_state['last_run'] = time.time()
+    st.session_state['last_rerun'] = time.time()
+    st.experimental_rerun()
 
 st.table(st.session_state['data'])
-
-# JavaScript to trigger a rerun every 300000 milliseconds (5 minutes)
-st.markdown("""
-    <script>
-    setInterval(function() {
-        window.location.reload();
-    }, 300000);  // Reload page every 5 minutes
-    </script>
-""", unsafe_allow_html=True)
