@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 from datetime import datetime
 import pytz
+import time
 import streamlit as st
 
 def fetch_data_and_calculate_pcr():
