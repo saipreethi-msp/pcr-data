@@ -1,6 +1,6 @@
-streamlit
-pandas
 json
 requests
+pandas as pd
 time
 datetime
+streamlit
