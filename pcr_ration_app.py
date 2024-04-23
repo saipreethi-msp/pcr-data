@@ -1,9 +1,9 @@
+import streamlit as st
 import json
 import requests
 import pandas as pd
 import time
 from datetime import date
-import streamlit as st
 
 def fetch_data_and_calculate_pcr():
     # Fetch data from the URL
