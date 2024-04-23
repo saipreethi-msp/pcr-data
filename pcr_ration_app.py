@@ -1,8 +1,8 @@
 import json
 import requests
 import pandas as pd
-import time
-from datetime import datetime, timezone, timedelta
+from datetime import datetime
+import pytz
 import streamlit as st
 
 def fetch_data_and_calculate_pcr():
@@ -24,8 +24,9 @@ def fetch_data_and_calculate_pcr():
     PCR = totPE / totCE
     option_signal = 'Buy' if PCR > 1 else 'Sell' if PCR < 1 else 'Neutral'
 
-    # Get current time with timezone adjustment
-    current_time = datetime.now(timezone.utc).astimezone()  # Adjust to local timezone
+    # Get current time in Indian Standard Time
+    ist = pytz.timezone('Asia/Kolkata')
+    current_time = datetime.now(ist)
     date_str = current_time.strftime('%Y-%m-%d')
     time_str = current_time.strftime('%H:%M:%S')
 
