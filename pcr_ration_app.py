@@ -71,14 +71,15 @@ selected_index = st.selectbox('Select an Index', ['Nifty', 'Nifty Bank', 'Nifty 
 # Get the index symbol
 index_symbol = get_index_symbol(selected_index)
 
-# Set a key for the rerun
-if 'last_rerun' not in st.session_state:
-    st.session_state['last_rerun'] = time.time()
+# Button to trigger PCR display
+if st.button('Show PCR Data'):
+    # Set a key for the rerun
+    if 'last_rerun' not in st.session_state:
+        st.session_state['last_rerun'] = time.time()
 
-# Load and display the data
-if 'data' not in st.session_state or time.time() - st.session_state['last_rerun'] > 300:
-    st.session_state['data'] = fetch_data_and_calculate_pcr(index_symbol)
-    st.session_state['last_rerun'] = time.time()
-    st.rerun()
+    # Load and display the data
+    if 'data' not in st.session_state or time.time() - st.session_state['last_rerun'] > 300:
+        st.session_state['data'] = fetch_data_and_calculate_pcr(index_symbol)
+        st.session_state['last_rerun'] = time.time()
 
-st.table(st.session_state['data'])
+    st.table(st.session_state['data'])
