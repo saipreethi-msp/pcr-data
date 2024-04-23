@@ -24,6 +24,7 @@ def fetch_data_and_calculate_pcr(index_symbol):
         # Extract relevant data
         totCE = data['filtered']['CE']['totOI']
         totPE = data['filtered']['PE']['totOI']
+        spot_price = data['records']['data'][0]['PE']['underlyingValue']
 
         # Calculate PCR ratio
         PCR = totPE / totCE
@@ -33,8 +34,11 @@ def fetch_data_and_calculate_pcr(index_symbol):
         new_data = {
             'Date': date.today().isoformat(),
             'Time': time.strftime('%H:%M:%S'),
-            'PCR Ratio': PCR,
-            'Option Signal': option_signal
+            'Total Call': [totCE],
+            'Total Put': [totPE],
+            'PCR Ratio': [PCR],            
+            'Nifty Value': [spot_price],  # Here we use the spot price as the Nifty value
+            'Option Signal': [option_signal]
         }
         return pd.DataFrame([new_data])
 
