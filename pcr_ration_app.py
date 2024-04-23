@@ -19,6 +19,7 @@ def fetch_data_and_calculate_pcr():
     # Extract relevant data
     totCE = data['filtered']['CE']['totOI']
     totPE = data['filtered']['PE']['totOI']
+    spot_price = data['records']['data'][0]['PE']['underlyingValue']
 
     # Calculate PCR ratio
     PCR = totPE / totCE
