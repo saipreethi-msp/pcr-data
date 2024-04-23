@@ -3,8 +3,8 @@ import requests
 import pandas as pd
 from datetime import datetime
 import pytz
-import time
 import streamlit as st
+import time  # Ensure time is imported
 
 def fetch_data_and_calculate_pcr():
     # Fetch data from the URL
@@ -43,8 +43,17 @@ def fetch_data_and_calculate_pcr():
 st.title('PCR Data Collection App')
 
 # Load and display the data
-if 'data' not in st.session_state or time.time() - st.session_state.get('last_run', 0) > 60:
+if 'data' not in st.session_state or time.time() - st.session_state.get('last_run', 0) > 300:
     st.session_state['data'] = fetch_data_and_calculate_pcr()
     st.session_state['last_run'] = time.time()
 
 st.table(st.session_state['data'])
+
+# JavaScript to trigger a rerun every 300000 milliseconds (5 minutes)
+st.markdown("""
+    <script>
+    setInterval(function() {
+        window.location.reload();
+    }, 300000);  // Reload page every 5 minutes
+    </script>
+""", unsafe_allow_html=True)
