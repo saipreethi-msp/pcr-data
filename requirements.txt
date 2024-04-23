@@ -1,6 +1,6 @@
 json
 requests
-pandas as pd
+pandas
 time
 datetime
 streamlit
