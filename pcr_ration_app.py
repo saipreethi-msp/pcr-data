@@ -1,9 +1,9 @@
-import streamlit as st
 import json
 import requests
 import pandas as pd
 import time
-from datetime import date
+from datetime import datetime, timezone, timedelta
+import streamlit as st
 
 def fetch_data_and_calculate_pcr():
     # Fetch data from the URL
@@ -24,10 +24,15 @@ def fetch_data_and_calculate_pcr():
     PCR = totPE / totCE
     option_signal = 'Buy' if PCR > 1 else 'Sell' if PCR < 1 else 'Neutral'
 
+    # Get current time with timezone adjustment
+    current_time = datetime.now(timezone.utc).astimezone()  # Adjust to local timezone
+    date_str = current_time.strftime('%Y-%m-%d')
+    time_str = current_time.strftime('%H:%M:%S')
+
     # Append the data to a DataFrame
     new_data = {
-        'Date': date.today().isoformat(),
-        'Time': time.strftime('%H:%M:%S'),
+        'Date': date_str,
+        'Time': time_str,
         'PCR Ratio': PCR,
         'Option Signal': option_signal
     }
